@@ -82,22 +82,24 @@ struct AVCConfigurationRecord {
     }
 
     func createFormatDescription(_ formatDescriptionOut: UnsafeMutablePointer<CMFormatDescription?>) -> OSStatus {
-        var parameterSetPointers: [UnsafePointer<UInt8>] = [
-            UnsafePointer<UInt8>(sequenceParameterSets[0]),
-            UnsafePointer<UInt8>(pictureParameterSets[0])
-        ]
-        var parameterSetSizes: [Int] = [
+        let parameterSetSizes: [Int] = [
             sequenceParameterSets[0].count,
             pictureParameterSets[0].count
         ]
-        return CMVideoFormatDescriptionCreateFromH264ParameterSets(
-            allocator: kCFAllocatorDefault,
-            parameterSetCount: 2,
-            parameterSetPointers: &parameterSetPointers,
-            parameterSetSizes: &parameterSetSizes,
-            nalUnitHeaderLength: naluLength,
-            formatDescriptionOut: formatDescriptionOut
-        )
+        var status: OSStatus = noErr
+        
+        sequenceParameterSets[0].withUnsafeBufferPointer { usps in
+            pictureParameterSets[0].withUnsafeBufferPointer { upps in
+                let parameterSetPointers = [usps.baseAddress!, upps.baseAddress!]
+                status = CMVideoFormatDescriptionCreateFromH264ParameterSets(allocator: kCFAllocatorDefault,
+                                                                                 parameterSetCount: 2,
+                                                                                 parameterSetPointers: parameterSetPointers,
+                                                                                 parameterSetSizes: parameterSetSizes,
+                                                                                 nalUnitHeaderLength: 4,
+                                                                                 formatDescriptionOut: formatDescriptionOut)
+            }
+        }
+        return status
     }
 }
 

@@ -121,15 +121,6 @@ public class AVMixer {
 
     weak var delegate: AVMixerDelegate?
 
-    private var _recorder: AVRecorder?
-    /// The recorder instance.
-    public var recorder: AVRecorder! {
-        if _recorder == nil {
-            _recorder = AVRecorder()
-        }
-        return _recorder
-    }
-
     private var _audioIO: AudioIOComponent?
     var audioIO: AudioIOComponent! {
         if _audioIO == nil {

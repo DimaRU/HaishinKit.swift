@@ -102,7 +102,6 @@ final class AudioIOComponent: IOComponent, DisplayLinkedQueueClockReference {
     }
 
     func appendSampleBuffer(_ sampleBuffer: CMSampleBuffer) {
-        mixer?.recorder.appendSampleBuffer(sampleBuffer, mediaType: .audio)
         encoder.encodeSampleBuffer(sampleBuffer)
     }
 

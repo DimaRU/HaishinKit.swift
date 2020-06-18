@@ -267,7 +267,6 @@ open class RTMPStream: NetStream {
                 mixer.audioIO.encoder.stopRunning()
                 mixer.videoIO.encoder.stopRunning()
                 sampler?.stopRunning()
-                mixer.recorder.stopRunning()
             default:
                 break
             }
@@ -298,10 +297,6 @@ open class RTMPStream: NetStream {
                 mixer.audioIO.encoder.startRunning()
                 mixer.videoIO.encoder.startRunning()
                 sampler?.startRunning()
-                if howToPublish == .localRecord {
-                    mixer.recorder.fileName = FilenameUtil.fileName(resourceName: info.resourceName)
-                    mixer.recorder.startRunning()
-                }
             default:
                 break
             }
@@ -422,13 +417,6 @@ open class RTMPStream: NetStream {
             }
 
             if self.info.resourceName == name && self.readyState == .publishing {
-                switch type {
-                case .localRecord:
-                    self.mixer.recorder.fileName = FilenameUtil.fileName(resourceName: self.info.resourceName)
-                    self.mixer.recorder.startRunning()
-                default:
-                    self.mixer.recorder.stopRunning()
-                }
                 self.howToPublish = type
                 return
             }

@@ -54,11 +54,6 @@ open class NetStream: NSObject {
         set { mixer.settings = newValue }
     }
 
-    open var recorderSettings: [AVMediaType: [String: Any]] {
-        get { mixer.recorder.outputSettings }
-        set { mixer.recorder.outputSettings = newValue }
-    }
-
     deinit {
         metadata.removeAll()
     }
