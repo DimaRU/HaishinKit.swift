@@ -23,7 +23,6 @@ let package = Package(
                     "Net",
                     "Util",
                     "RTMP",
-                    "HTTP",
                     "Platforms"
                 ])
     ]
